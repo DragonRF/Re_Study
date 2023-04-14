@@ -1,3 +1,8 @@
+html{
+    font-family: 'Work Sans', sans-serif;
+}
+
+
 #first-col {
     align-items: center;
     justify-content: center;
@@ -11,7 +16,7 @@
     font-weight: bold;
     width: 100%;
     height: 550px;
-    background-image: url("pngtree-starry-fantasy-blue-purple-red-meteor-background-material-blue-purplemeteor-backgroundbackground-image_68981.jpg");
+    background-image: url("./img/pngtree-starry-fantasy-blue-purple-red-meteor-background-material-blue-purplemeteor-backgroundbackground-image_68981.jpg");
 }
 
 .title-container{
@@ -71,7 +76,7 @@ p{
     font-weight: lighter;
     float: left;
 }
-h3{
+h3,svg{
     color: #985cef;
 }
 
