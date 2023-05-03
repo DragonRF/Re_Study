@@ -1,0 +1,11 @@
+.bg-login-left {
+  background-image: linear-gradient(30deg, red, yellow);
+}
+
+.text-title {
+  margin-top: 300px;
+
+  font-size: 100px;
+  font-weight: bold;
+
+}
