@@ -48,12 +48,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">User manager</h1>
+                        <h1 class="m-0">Category Manager</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                            <li class="breadcrumb-item active">User adding</li>
+                            <li class="breadcrumb-item active">Category Manager</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -63,17 +63,53 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <section class="content">
-                    <div class="container-fluid">
-                        <h1>Confirm Delete User</h1>
-                        <p>Are you sure you want to delete <%= user.name %>?</p>
-                        <form method="post" action="/admin/users/<%= user.id %>/confirm-delete">
-                            <input type="hidden" name="id" value="<%= user.id %>">
-                            <button type="submit" class="btn btn-danger">Yes</button>
-                            <a href="/admin/users" class="btn btn-secondary">No</a>
-                        </form>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Category List
+                                <a href="/admin/categories/create" class="btn btn-success">Add new</a>
+
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body text-center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% categories.forEach((category, index) => { %>
+                                    <tr>
+                                        <td><%= index + 1 %></td>
+                                        <td><%= category.name %></td>
+
+                                        <td>
+                                            <a href="/admin/categories/<%= category.id %>/edit" class="btn btn-primary">Edit</a>
+                                            <a href="/admin/categories/<%= category.id %>/delete" class="btn btn-danger">Delete</a>
+                                        </td>
+
+                                    </tr>
+                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">»</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </section>
+                    <!-- /.card -->
+
+                </div>
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
@@ -116,6 +152,7 @@
 <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/adminlte.js"></script>
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/dist/js/pages/dashboard.js"></script>
 </body>

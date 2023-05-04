@@ -48,12 +48,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">User manager</h1>
+                        <h1 class="m-0">Category Manager</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/admin">Home</a></li>
-                            <li class="breadcrumb-item active">User adding</li>
+                            <li class="breadcrumb-item active">Category Deleting</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -65,12 +65,12 @@
             <div class="container-fluid">
                 <section class="content">
                     <div class="container-fluid">
-                        <h1>Confirm Delete User</h1>
-                        <p>Are you sure you want to delete <%= user.name %>?</p>
-                        <form method="post" action="/admin/users/<%= user.id %>/confirm-delete">
-                            <input type="hidden" name="id" value="<%= user.id %>">
+                        <h1>Confirm Delete Category</h1>
+                        <p>Are you sure you want to delete <%= category.name %>?</p>
+                        <form method="post" action="/admin/categories/<%= category.id %>/confirm-delete">
+                            <input type="hidden" name="id" value="<%= category.id %>">
                             <button type="submit" class="btn btn-danger">Yes</button>
-                            <a href="/admin/users" class="btn btn-secondary">No</a>
+                            <a href="/admin/categories" class="btn btn-secondary">No</a>
                         </form>
                     </div>
                 </section>

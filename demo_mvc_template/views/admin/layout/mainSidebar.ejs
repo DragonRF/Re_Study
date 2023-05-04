@@ -13,7 +13,11 @@
                 <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">
+                    <% if(currentUser ) {%>
+                        <%= currentUser.username %>
+                    <% } %>
+                </a>
             </div>
         </div>
 
@@ -47,22 +51,46 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
-                            User manager
+                            User Manager
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            <span class="badge badge-info right"></span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="/admin/users" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>User list</p>
+                                <p>User List</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/admin/users/create" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>User add</p>
+                                <p>User Add</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Category Manager
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/admin/categories" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Category List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/categories/create" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Category Add</p>
                             </a>
                         </li>
                     </ul>

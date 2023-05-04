@@ -9,7 +9,9 @@ const AppDataSource = new DataSource({
     synchronize: true,
     logging: true,
     entities: [
-        require("./entities/user")
+        require("./entities/user"),
+        require("./entities/category"),
+
     ],
     subscribers: [],
     migrations: [],

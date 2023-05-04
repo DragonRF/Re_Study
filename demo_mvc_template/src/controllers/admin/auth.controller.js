@@ -20,9 +20,11 @@ class AuthController {
         ).then((result) => {
             if (result.length > 0) {
                 let userInfo = result[0]
+                if (userInfo.role != 'admin'){
+                    return res.render('errors/403')
+                }
                 // luu thong tin user login vao session
                 const {id, username, email, phone, address} = userInfo
-                res.locals.user = {id, username, email, phone, address}
                 req.session.user = {id, username, email, phone, address}
                 req.session.save(function (err) {
                     if (err) return next(err)

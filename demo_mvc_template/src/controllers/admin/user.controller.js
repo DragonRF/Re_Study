@@ -3,11 +3,10 @@ const AppDataSource = require("../../data-source");
 const userRepository = AppDataSource.getRepository("User");
 
 class UserController {
-    static showUserList(req, res) {
-        let userLogin = req.session.user;
-        userRepository.find({}).then(users => {
-            return res.render('admin/users/list', {users: users, userLogin: userLogin});
-        });
+    static async showUserList(req, res) {
+        const userLogin = req.session.user;
+        const value = await userRepository.find({});
+        return res.render('admin/users/list', { users: value, userLogin: userLogin});
     }
 
     static showFormCreate(req, res) {
@@ -16,13 +15,11 @@ class UserController {
 
     static async store(req, res) {
         try {
-            const { name, email, username, address, phone, password } = req.body;
-            const user = userRepository.create({ name, email, username, address, phone, password, role: "user" });
+            const {name, email, username, address, phone, password,role} = req.body;
+            const user = userRepository.create({name, email, username, address, phone, password, role});
             await userRepository.save(user);
-            console.log('New user created:', user);
             return res.redirect('/admin/users');
         } catch (error) {
-            console.error('Error creating user:', error);
             return res.status(500).send('Error creating user');
         }
     }
@@ -31,9 +28,11 @@ class UserController {
         const userId = req.params.id;
         try {
             const user = await userRepository.findOneById(userId);
-            return res.render('admin/users/delete', { user: user });
+            if (!user) {
+                return res.render('errors/404')
+            }
+            return res.render('admin/users/delete', {user: user});
         } catch (error) {
-            console.error('Error deleting user:', error);
             return res.status(500).send('Error deleting user');
         }
     }
@@ -42,46 +41,47 @@ class UserController {
         const userId = req.params.id;
         try {
             const user = await userRepository.findOneById(userId);
+            if (!user) {
+                return res.render('errors/404')
+            }
             await userRepository.remove(user);
-            console.log('User deleted:', user);
             return res.redirect('/admin/users');
         } catch (error) {
-            console.error('Error deleting user:', error);
             return res.status(500).send('Error deleting user');
         }
     }
 
-    static async showFormEdit(req, res){
+    static async showFormEdit(req, res) {
         const userId = req.params.id;
         try {
             const user = await userRepository.findOneById(userId);
-        console.log(user)
-
-        return res.render('admin/users/edit',{user: user});
+            if (!user) {
+                return res.render('errors/404')
+            }
+            return res.render('admin/users/edit', {user: user});
         } catch (error) {
-            console.error('Error getting user:', error);
             return res.status(500).send('Error getting user');
         }
     }
 
-    static async edit(req, res){
+    static async edit(req, res) {
         const userId = req.params.id;
-        // try {
+        try {
             const user = await userRepository.findOneById(userId);
-            const { name, email, username, address, phone, password } = req.body;
+            if (!user) {
+                return res.render('errors/404')
+            }
+            const {name, role, username, address, phone} = req.body;
             user.name = name;
-            user.email = email;
             user.username = username;
+            user.role = role;
             user.address = address;
             user.phone = phone;
-            user.password = password;
             await userRepository.save(user);
-            console.log('User updated:', user);
             return res.redirect('/admin/users');
-        // } catch (error) {
-        //     console.error('Error updating user:', error);
-        //     return res.status(500).send('Error updating user');
-        // }
+        } catch (error) {
+            return res.status(500).send('Error updating user');
+        }
     }
 }
 
