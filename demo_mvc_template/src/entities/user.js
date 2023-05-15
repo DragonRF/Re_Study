@@ -27,7 +27,6 @@ module.exports = new EntitySchema({
             type: "varchar",
         },
         phone: {
-            unique: true,
             type: "varchar",
         },
         password: {

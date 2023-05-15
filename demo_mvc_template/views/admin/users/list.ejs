@@ -86,8 +86,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <% if (users.length === 0) {%>
+                                    <tr>
+                                        <td colspan="2">No data</td>
+                                    </tr>
+                                <%} else {%>
                                 <% users.forEach((user, index) => {%>
-                                <tr>
+                                <tr id="user-<%= user.id%>">
                                     <td><%= index + 1%></td>
                                     <td><%= user.name %></td>
                                     <td><%= user.username %></td>
@@ -103,12 +108,13 @@
                                     <td>
                                         <a href="/admin/users/<%= user.id %>/edit" class="btn btn-primary">Edit</a>
                                         <% if (user.id !== userLogin.id) { %>
-                                                <a href="/admin/users/<%= user.id %>/delete"  class="btn btn-danger">Delete</a>
+                                                <button data-id="<%= user.id %>"  class="btn btn-danger btn-delete-user">Delete</button>
                                             <% } %>
                                     </td>
 
                                 </tr>
                                 <% }) %>
+                                <%}%>
 
                                 </tbody>
                             </table>
@@ -172,5 +178,24 @@
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/dist/js/pages/dashboard.js"></script>
+<script>
+    $(document).ready(() => {
+        $('.btn-delete-user').click(function () {
+            let idUser = $(this).attr('data-id');
+            $.ajax({
+                url:'http://localhost:3000/admin/users/' + idUser + '/delete',
+                method: 'GET',
+                success: (response) =>{
+                    console.log("ok")
+                    $('#user-' + idUser).remove()
+                },
+                error: (error) =>{
+                    console.log(error)
+                }
+            })
+        })
+    })
+
+</script>
 </body>
 </html>

@@ -4,23 +4,39 @@ const categoryRepository = AppDataSource.getRepository("Category");
 
 class CategoryController {
     static async showCategoryList(req, res) {
-        const userLogin = req.session.user;
-        const value = await categoryRepository.find({});
-        return res.render('admin/categories/list', { categories: value, userLogin: userLogin});
+        const data = await categoryRepository.find({});
+        return res.render('admin/categories/list', { categories: data});
     }
 
-    static showCategoryFormCreate(req, res) {
-        return res.render('admin/categories/add');
+    static async showCategoryFormCreate(req, res) {
+        const data = await categoryRepository.find({});
+        return res.render('admin/categories/add',{categories: data});
     }
 
-    static async CategoryStore(req, res) {
+    static async store(req, res) {
         try {
-            const {name} = req.body;
-            const category = categoryRepository.create({name});
-            await categoryRepository.save(category);
-            return res.redirect('/admin/categories');
+            const { name } = req.body;
+            const existingCategory = await categoryRepository.findOne({ name });
+
+            if (existingCategory) {
+                return res.status(400).json({
+                    message: 'Category already exists'
+                });
+            }
+
+            const category = categoryRepository.create({
+                name
+            });
+            let result = await categoryRepository.save(category);
+            return res.status(200).json({
+                message: 'Create category successful.',
+                cate: result
+            });
         } catch (error) {
-            return res.status(500).send('Error creating categories');
+            console.log(error.message)
+            return res.status(500).send({
+                message: 'Failed on creating new category'
+            });
         }
     }
 

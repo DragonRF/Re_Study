@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -81,18 +82,25 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <% categories.forEach((category, index) => { %>
+                                <% if (categories.length === 0) {%>
                                     <tr>
+                                        <td colspan="2">No data</td>
+                                    </tr>
+                                     <%} else {%>
+                                <% categories.forEach((category, index) => { %>
+
+                                    <tr id="category-<%= category.id%>">
                                         <td><%= index + 1 %></td>
                                         <td><%= category.name %></td>
 
                                         <td>
                                             <a href="/admin/categories/<%= category.id %>/edit" class="btn btn-primary">Edit</a>
-                                            <a href="/admin/categories/<%= category.id %>/delete" class="btn btn-danger">Delete</a>
+                                            <button data-id="<%= category.id %>" class="btn btn-danger btn-delete-category">Delete</button>
                                         </td>
 
                                     </tr>
                                 <% }) %>
+                                <%}%>
                                 </tbody>
                             </table>
                         </div>
@@ -126,7 +134,8 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="/plugins/jquery/jquery.min.js"></script>
+<!--<script src="/plugins/jquery/jquery.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -155,5 +164,27 @@
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/dist/js/pages/dashboard.js"></script>
+<script>
+    // lang nghe su kien click button delete
+    // $(selector).action(callback)
+    $(document).ready(() => {
+        $('.btn-delete-category').click(function () {
+                let idCate = $(this).attr('data-id');
+                $.ajax({
+                    url:'http://localhost:3000/admin/categories/' + idCate + '/delete',
+                    method: 'GET',
+                    success: (response) =>{
+                        console.log("ok")
+                        $('#category-' + idCate).remove()
+                    },
+                    error: (error) =>{
+                        console.log(error)
+                    }
+                })
+        })
+    })
+
+
+</script>
 </body>
 </html>

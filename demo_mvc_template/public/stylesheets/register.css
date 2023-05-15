@@ -1,0 +1,80 @@
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+.form-container {
+    width: 780px;
+    background: white;
+    margin: 50px auto 0;
+    height: 450px;
+    border-radius: 20px;
+
+}
+
+.user-info,.user-account {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+
+
+.gender {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.gender div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-image: linear-gradient(white, blue);
+    height: 735px;
+    width: 100%;
+    float: left;
+
+}
+
+.title {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.username-container,
+.password-container,
+.btn-submit,
+.name-container,
+.phone-container,
+.email-container,
+.address-container,
+.btn-radio {
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-top: 12px;
+}
+
+input {
+    height: 25px;
+    width: 100%;
+
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    color: aliceblue;
+    justify-content: center;
+    background-image: linear-gradient(30deg, pink, blue);
+
+}
+
+label {
+    font-weight: bold;
+}
+

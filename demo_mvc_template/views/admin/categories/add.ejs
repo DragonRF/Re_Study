@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+    <link href="
+https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css
+" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -63,10 +66,11 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <form method="post" action="/admin/categories/add">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-12 col-md-7">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-12 col-md-5">
+                            <form id="form-add-category">
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h3 class="card-title">Thêm thể loại</h3>
@@ -80,15 +84,61 @@
                                                    placeholder="Enter name">
                                         </div>
                                         <div class="">
-                                            <button class="btn btn-primary" type="submit">Save</button>
+                                            <button class="btn btn-primary btn-add-category" type="submit">Save</button>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
+                            </form>
+                        </div>
+
+                        <div class="col-12 col-md-7">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Category List
+                                    </h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body text-center">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Name</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="list-category">
+                                        <% if (categories.length === 0) { %>
+                                            <tr>
+                                                <td colspan="2">No data</td>
+                                            </tr>
+                                        <% } else { %>
+                                            <% categories.forEach((category, index) => { %>
+
+                                                <tr id="category-<%= category.id %>">
+                                                    <td><%= index + 1 %></td>
+                                                    <td><%= category.name %></td>
+
+                                                    <td>
+                                                        <a href="/admin/categories/<%= category.id %>/edit"
+                                                           class="btn btn-primary">Edit</a>
+                                                        <button data-id="<%= category.id %>"
+                                                                class="btn btn-danger btn-delete-category">Delete
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                            <% }) %>
+                                        <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
@@ -133,5 +183,70 @@
 <script src="/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="/dist/js/pages/dashboard.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js
+"></script>
+
+<script>
+    // lang nghe su kien click button delete
+    // $(selector).action(callback)
+    $(document).ready(() => {
+        $('.btn-delete-category').click(function () {
+            let idCate = $(this).attr('data-id');
+            $.ajax({
+                url: 'http://localhost:3000/admin/categories/' + idCate + '/delete',
+                method: 'GET',
+                success: (response) => {
+                    console.log("ok")
+                    $('#category-' + idCate).remove()
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            })
+        })
+
+        $('#form-add-category').submit(function (e) {
+            // Ngăn chức năng chức nang submit thong thuong 1 form
+            e.preventDefault();
+            // chuan bi du lieu - lay du lieu can thiet cua request
+            let formData = $(this).serialize();
+
+            // viet loi goi ajax
+            $.ajax({
+                url: 'http://localhost:3000/admin/categories/add',
+                method: 'POST',
+                data: formData,
+                dataType: 'json',
+
+                success: (response) => {
+                    toastr.success(response.message)
+                    let category = response.cate;
+                    let html = `<tr id="category-${category.id}">
+                                  <td>${category.id}</td>
+                                 <td>${category.name}</td>
+                                 <td>
+                                <a href="/admin/categories/${category.id}/edit"
+                                                           class="btn btn-primary">Edit</a>
+                                        <button data-id="${category.id}"
+                                               class="btn btn-danger btn-delete-category">Delete
+                                        </button>
+                                </td>
+
+                                </tr>`;
+                    console.log(html)
+                    $('#list-category').append(html)
+                },
+                error: (err) => {
+                    toastr.error(err.responseJSON.message)
+                }
+            })
+
+        })
+    })
+
+
+</script>
+
 </body>
 </html>

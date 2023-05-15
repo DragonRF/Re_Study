@@ -41,6 +41,69 @@ class AuthController {
         })
     }
 
+    static showPageRegister(req,res){
+        let errRegMess = req.session.error;
+        res.render('admin/auth/register', { errRegMess: errRegMess });
+    }
+
+    static register(req, res) {
+        const { name, email, password, username, address, phone } = req.body;
+
+        const newUser = userRepository.create({
+            name,
+            email,
+            password,
+            username,
+            address,
+            phone,
+        });
+
+        userRepository.save(newUser)
+            .then((result) => {
+                const userInfo = result;
+                const { id, username, email, phone, address, password } = userInfo;
+
+                req.session.user = {
+                    id,
+                    name,
+                    username,
+                    email,
+                    phone,
+                    address,
+                    password,
+                };
+
+                req.session.save((err) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).send("Error: Could not save session");
+                    } else {
+                        req.session.success = "Account registration successful";
+                        req.session.save((err) => {
+                            if (err) {
+                                console.error(err);
+                                res.status(500).send("Error: Could not save session");
+                            } else {
+                                res.redirect('/admin/auth/login');
+                            }
+                        });
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                req.session.error = "Error: Could not register account";
+                req.session.save((err) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).send("Error: Could not save session");
+                    } else {
+                        res.redirect('/auth/register');
+                    }
+                });
+            });
+    }
+
     static logout(req, res) {
         req.session.user = null;
         req.session.error = null;
